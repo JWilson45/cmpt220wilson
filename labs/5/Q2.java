@@ -33,7 +33,7 @@ public class Q2 {
 		double total = 0;
 		for(double num : x)
 			total += num;
-		return total / 10;
+		return total / 10; // JA: Why only 10?
 	}
 
 }
