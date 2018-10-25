@@ -1,0 +1,16 @@
+public class Course_Test {
+	public static void main(String[] args) {
+		Course course = new Course("Intro");
+		
+		course.addStudent("Billy");
+		course.addStudent("Ray");
+		course.addStudent("Cirus");
+
+		course.dropStudent("Ray");
+		
+		System.out.println("Students in this course:");
+		for(int i = 0; i<course.getNumberOfStudents();i++)
+			System.out.println(course.getStudents()[i]);
+	}
+
+}
