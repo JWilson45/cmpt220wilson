@@ -61,8 +61,6 @@ public class MyLong {
 		return equals(l.getValue());
 	}
 	
-	/**does not work:*/
-	
 	public static long parseLong(char[] l) {
 		String s = "";
 		for(int i = 0; i<l.length;i++)
