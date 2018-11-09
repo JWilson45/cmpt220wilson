@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Q3 {
+public class Q4 {
 
 	public static void main(String[] args) {
 		
