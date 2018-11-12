@@ -1,5 +1,4 @@
-
-import java.util.ArrayList;
+import java.util.Arrays;
 
 //import javax.swing.JFrame;
 
@@ -15,9 +14,9 @@ public class KeyTest {
 				e.printStackTrace();
 			}
 		}
-
-		ArrayList<Long> arr = keyListener.getResults();
-		System.out.println(arr.toString()); 
+		
+		long[] arr = keyListener.getResults();
+		System.out.println(Arrays.toString(arr));
 	}
 }
 
