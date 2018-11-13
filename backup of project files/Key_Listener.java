@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 //import javax.swing.JPanel;
 
+/**
+ * 
+ * @author Jason Wilson
+ *
+ */
 public class Key_Listener implements KeyListener {
 	
 	private ArrayList<Long> results;
@@ -83,7 +88,7 @@ public class Key_Listener implements KeyListener {
 		}
 		return keyListener.getResults();
 	}
-	
+
 }
 
 /**ZonedDateTime.now().toInstant().toEpochMilli() and e.getWhen() are equal*/
