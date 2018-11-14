@@ -1,3 +1,3 @@
-	abstract class Encryption {
+abstract class Encryption {
 	
 }
