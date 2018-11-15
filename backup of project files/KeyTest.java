@@ -1,3 +1,5 @@
+package project2;
+
 import java.util.Arrays;
 
 //import javax.swing.JFrame;

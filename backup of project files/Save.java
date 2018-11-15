@@ -1,3 +1,5 @@
+package project2;
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -8,7 +10,7 @@ abstract class Save {
 	public static void save(Encrypt e) {
 	try {
 		PrintWriter pw = new PrintWriter("src/project2/data/EncryptedText.txt","UTF-8");
-		for(int i = 1; i<e.getEncryptedText().length();i++) {
+		for(int i = 0; i<e.getEncryptedText().length();i++) {
 			if (e.getEncryptedText().charAt(i) == ',')
 				i++;
 			pw.print(e.getEncryptedText().charAt(i));

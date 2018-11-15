@@ -1,3 +1,5 @@
+package project2;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -11,13 +13,12 @@ public class Encrypt extends Encryption{
 	private ArrayList<Integer> key2;
 	private String encryptedText;
 	private String textToEncrypt;
-	
+
 	/**Constructor*/
 	public Encrypt(){
-		textToEncrypt = null;
-		key2 = new ArrayList<>();
+		this(null);
 	}
-	
+
 	/**Constructor
 	 * @param textToEncrypt The string to be encrypted
 	 */
@@ -25,16 +26,16 @@ public class Encrypt extends Encryption{
 		this.textToEncrypt = textToEncrypt;
 		key2 = new ArrayList<>();
 	}
-	
+
 	/**Initialize encryption*/
 	public void encrypt() {
 		//Set Variable(s)
 		long[] encryptedArray = new long[textToEncrypt.length()];
-		
+
 		//Check for keys
 		if (key == null)
 			generateNewKey();
-		
+
 		/*First level of encryption:
 		 * takes the string provided by user and
 		 * changes their values using the random
@@ -45,18 +46,18 @@ public class Encrypt extends Encryption{
 			if(j+1 >= key.length-1)
 				j = 0;
 		}
-		
+
 		/*Sends the second stage to another random 
 		 * generator to further encrypt the string and
 		 * finalize*/
 		stage2(encryptedArray);
 	}
-	
+
 	private void stage2(long[] l) {
 		//Set Variables
 		int randomCharShiftNumber;
 		ArrayList<Integer> encryptionStage2 = new ArrayList<Integer>();
-		
+
 		for (int i = 1;i<Arrays.toString(l).length()-1;i++) {
 			//Adding only wanted characters from the string into array
 			if(Arrays.toString(l).charAt(i) == ',') {
@@ -64,7 +65,7 @@ public class Encrypt extends Encryption{
 				key2.add(1);
 				i += 2;
 			}
-			
+
 			//Excluding problem causing char values
 			do randomCharShiftNumber = (int)(Math.random()*244);
 			while(randomCharShiftNumber < 32 || ((int)Arrays.toString(l).charAt(i))-48 + randomCharShiftNumber == 133);
@@ -76,11 +77,11 @@ public class Encrypt extends Encryption{
 		//Set the EncryptedText variable
 		setEncryptedText(encryptionStage2);
 	}
-	
+
 	private void setEncryptedText(ArrayList<Integer> encryptionStage2) {
 		//Set Variable(s)
 		StringBuilder encryptedString = new StringBuilder();
-		
+
 		for (int i = 0;i < encryptionStage2.size();i++) {
 			encryptedString.append(((char)encryptionStage2.get(i).intValue()));
 		}
@@ -135,4 +136,5 @@ public class Encrypt extends Encryption{
 	public String getEncryptedText() {
 		return encryptedText;
 	}
+
 }

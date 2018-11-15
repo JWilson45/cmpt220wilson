@@ -1,3 +1,5 @@
+package project2;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -14,6 +16,10 @@ public class DecryptTest extends Save {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		
+		decrypt.decrypt();
+		
+		System.out.println(decrypt.getDecryptedText());
 	}
 
 	private static String readFile(String file) throws FileNotFoundException {
@@ -25,9 +31,9 @@ public class DecryptTest extends Save {
 	}
 
 	/**
+	 * Method reads and separates 
 	 * @param file File path
-	 * @param x either 1 or 0, this will decide which part of the 
-	 * key to extract into a long[]
+	 * @param e Decrypt object
 	 * @return Long Array for decrypting
 	 * @throws FileNotFoundException 
 	 */
