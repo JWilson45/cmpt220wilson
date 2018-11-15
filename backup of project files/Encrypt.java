@@ -4,15 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Usage: 	Initialize using constructor, setText, then getEncryptedText and
- *			class will return encrypted text.
+ * Usage: 	Initialize using constructor, setDecryptedText, encrypt(), then
+ * getEncryptedText()
  * @author Jason Wilson
  */
 public class Encrypt extends Encryption{
-	private long[] key;
-	private ArrayList<Integer> key2;
-	private String encryptedText;
-	private String textToEncrypt;
 
 	/**Constructor*/
 	public Encrypt(){
@@ -20,30 +16,30 @@ public class Encrypt extends Encryption{
 	}
 
 	/**Constructor
-	 * @param textToEncrypt The string to be encrypted
+	 * @param decryptedText The string to be encrypted
 	 */
-	public Encrypt(String textToEncrypt) {
-		this.textToEncrypt = textToEncrypt;
-		key2 = new ArrayList<>();
+	public Encrypt(String decryptedText) {
+		this.setDecryptedText(decryptedText);
+		setKey2(new ArrayList<>());
 	}
 
 	/**Initialize encryption*/
 	public void encrypt() {
 		//Set Variable(s)
-		long[] encryptedArray = new long[textToEncrypt.length()];
+		long[] encryptedArray = new long[getDecryptedText().length()];
 
 		//Check for keys
-		if (key == null)
+		if (getKey() == null)
 			generateNewKey();
 
 		/*First level of encryption:
 		 * takes the string provided by user and
 		 * changes their values using the random
 		 * numbers the key provides.*/
-		for (int i = 0, j = 0;i<textToEncrypt.length();i++,j++) {
-			encryptedArray[i] = (textToEncrypt.charAt(i) * key[j]) - key[j+1];
+		for (int i = 0, j = 0;i<getDecryptedText().length();i++,j++) {
+			encryptedArray[i] = (getDecryptedText().charAt(i) * getKey()[j]) - getKey()[j+1];
 			//Prevents array index out of bounds
-			if(j+1 >= key.length-1)
+			if(j+1 >= getKey().length-1)
 				j = 0;
 		}
 
@@ -62,7 +58,7 @@ public class Encrypt extends Encryption{
 			//Adding only wanted characters from the string into array
 			if(Arrays.toString(l).charAt(i) == ',') {
 				encryptionStage2.add(0);
-				key2.add(1);
+				getKey2().add(1);
 				i += 2;
 			}
 
@@ -72,7 +68,7 @@ public class Encrypt extends Encryption{
 
 			//Adding values to Lists
 			encryptionStage2.add((((int)Arrays.toString(l).charAt(i))-48) + randomCharShiftNumber);
-			key2.add(randomCharShiftNumber);
+			getKey2().add(randomCharShiftNumber);
 		}
 		//Set the EncryptedText variable
 		setEncryptedText(encryptionStage2);
@@ -85,56 +81,12 @@ public class Encrypt extends Encryption{
 		for (int i = 0;i < encryptionStage2.size();i++) {
 			encryptedString.append(((char)encryptionStage2.get(i).intValue()));
 		}
-		encryptedText = encryptedString.toString();
+		setEncryptedText(encryptedString.toString());
 	}
 
 	/**Generates a new random set of keys based on user input*/
 	public void generateNewKey() {
-		key = Key_Listener.random();
-	}
-
-	/**
-	 * @return The primary key for number to be decrypted
-	 */
-	public long[] getKey() {
-		return key;
-	}
-
-	/**
-	 * Set the encryption key instead of
-	 * randomly generating it.
-	 * @param key
-	 */
-	public void setKey(long[] key) {
-		this.key = key;
-	}
-
-	/**
-	 * @return text that is entered and ready to be encrypted
-	 */
-	public String getText() {
-		return textToEncrypt;
-	}
-
-	/**
-	 * @param textToEncrypt String to be encrypted
-	 */
-	public void setText(String textToEncrypt) {
-		this.textToEncrypt = textToEncrypt;
-	}
-
-	/**
-	 * @return Second set of random numbers to use for decryption
-	 */
-	public ArrayList<Integer> getStage2() {
-		return key2;
-	}
-
-	/**
-	 * @return Encrypted text as a string
-	 */
-	public String getEncryptedText() {
-		return encryptedText;
+		setKey(Key_Listener.random());
 	}
 
 }

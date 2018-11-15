@@ -10,7 +10,7 @@ public class EncryptTest extends Save {
 		
 		Scanner input = new Scanner(System.in);
 		
-		encrypt.setText(input.nextLine());
+		encrypt.setDecryptedText(input.nextLine());
 		
 		input.close();
 		

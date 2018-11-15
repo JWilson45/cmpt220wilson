@@ -41,7 +41,7 @@ public class DecryptTest extends Save {
 		File keyTextFile = new File(file);
 		Scanner input = new Scanner(keyTextFile);
 		long[] longArray = new long[input.nextInt()];
-		ArrayList<Long> longList = new ArrayList<>();
+		ArrayList<Integer> longList = new ArrayList<>();
 
 		for(int i = 0; i<longArray.length;i++)
 			longArray[i] = input.nextLong();
@@ -51,15 +51,10 @@ public class DecryptTest extends Save {
 
 
 		while(input.hasNext())
-			longList.add(input.nextLong());
-
-		longArray = new long[longList.size()];
-
-		for(int i = 0;i<longList.size();i++)
-			longArray[i] = longList.get(i);
+			longList.add(input.nextInt());
 
 
-		e.setKey2(longArray);
+		e.setKey2(longList);
 
 
 		input.close();

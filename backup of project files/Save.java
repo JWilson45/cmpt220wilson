@@ -29,10 +29,10 @@ abstract class Save {
 			pw2.print(Arrays.toString(e.getKey()).charAt(i));
 		}
 		pw2.println();
-		for(int i = 1; i<e.getStage2().toString().length()-1;i++) {
-			if (e.getStage2().toString().charAt(i) == ',')
+		for(int i = 1; i<e.getKey2().toString().length()-1;i++) {
+			if (e.getKey2().toString().charAt(i) == ',')
 				i++;
-			pw2.print(e.getStage2().toString().charAt(i));
+			pw2.print(e.getKey2().toString().charAt(i));
 		}
 		pw2.close();
 	} catch (FileNotFoundException | UnsupportedEncodingException e1) {
