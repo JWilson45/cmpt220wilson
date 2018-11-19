@@ -31,9 +31,9 @@ public class Decrypt extends Encryption{
 		ArrayList<Integer> encryptedTextAsChar = toChar();
 		ArrayList<Integer> key2UsedDecryption = reverseKey2(encryptedTextAsChar);
 		String decryptedStage2String = Stage2(key2UsedDecryption);
-		System.out.println(encryptedTextAsChar);
-		System.out.println(key2UsedDecryption);
-		System.out.println(decryptedStage2String);
+//		System.out.println(encryptedTextAsChar);
+//		System.out.println(key2UsedDecryption);
+//		System.out.println(decryptedStage2String);
 		ArrayList<Integer> encryptedInt = Stage3(decryptedStage2String);
 		setDecryptedText(FinalStage(encryptedInt));		
 	}

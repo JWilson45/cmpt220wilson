@@ -64,7 +64,11 @@ public class Encrypt extends Encryption{
 
 			//Excluding problem causing char values
 			do randomCharShiftNumber = (int)(Math.random()*244);
-			while(randomCharShiftNumber < 32 || ((int)Arrays.toString(l).charAt(i))-48 + randomCharShiftNumber == 133);
+			while(
+					randomCharShiftNumber < 32
+					|| ((int)Arrays.toString(l).charAt(i))-48 + randomCharShiftNumber == 133
+					|| ((int)Arrays.toString(l).charAt(i))-48 + randomCharShiftNumber == 44
+					);
 
 			//Adding values to Lists
 			encryptionStage2.add((((int)Arrays.toString(l).charAt(i))-48) + randomCharShiftNumber);

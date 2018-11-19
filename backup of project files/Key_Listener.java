@@ -9,9 +9,10 @@ import javax.swing.JFrame;
 //import javax.swing.JPanel;
 
 /**
- * 
+ * Use: type Key_Listener.random() and set that equal to an array of long (long[])
+ * you will be prompted by a window where it records your key strokes to generate 
+ * random numbers.
  * @author Jason Wilson
- *
  */
 public class Key_Listener implements KeyListener {
 	
