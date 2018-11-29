@@ -71,7 +71,7 @@ abstract class Save {
 	public static void setKeysFromFile(Decrypt e) throws FileNotFoundException {
 		File keyTextFile = new File(fileLocation + keysFileName);
 		Scanner input = new Scanner(keyTextFile);
-		
+
 		long[] longArray = new long[input.nextInt()];
 		ArrayList<Integer> longList = new ArrayList<>();
 
@@ -87,19 +87,52 @@ abstract class Save {
 
 		input.close();
 	}
-	
+
 	public static void setKeysFromFile(Decrypt e, String FileLocation) throws FileNotFoundException {
 		String fileLocationTmp = fileLocation;
 		fileLocation = FileLocation;
 		setKeysFromFile(e);
 		fileLocation = fileLocationTmp;
 	}
-	
+
 	public static void setEncryptedTextFromFile(Decrypt e, String FileLocation) throws FileNotFoundException {
 		String fileLocationTmp = fileLocation;
 		fileLocation = FileLocation;
 		setEncryptedTextFromFile(e);
 		fileLocation = fileLocationTmp;
+	}
+
+	public static void setDefaultKey(Encrypt e, String fileLocation) {
+		File defaultKey = new File(fileLocation);
+		try {
+			Scanner input = new Scanner(defaultKey);
+			long[] longArray = new long[input.nextInt()];
+
+			for(int i = 0; i<longArray.length;i++)
+				longArray[i] = input.nextLong();
+
+			e.setKey(longArray);
+			input.close();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	public static String importDecryptedText(String fileLocation) {
+		File decryptedTextFile = new File(fileLocation);
+		StringBuilder importText = new StringBuilder();
+		try {
+			Scanner input = new Scanner(decryptedTextFile);
+			while(input.hasNextLine()) {
+				importText.append(input.nextLine());
+				importText.append(10);
+			}
+			input.close();
+			importText.deleteCharAt(importText.length() - 1);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return importText.toString();
 	}
 
 	public String getKeysFileName() {

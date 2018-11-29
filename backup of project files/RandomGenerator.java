@@ -5,32 +5,18 @@ import java.awt.event.KeyListener;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-//import javax.swing.JPanel;
-
 /**
- * Use: type Key_Listener.random() and set that equal to an array of long (long[])
- * you will be prompted by a window where it records your key strokes to generate 
- * random numbers.
  * @author Jason Wilson
  */
-public class Key_Listener implements KeyListener {
+public class RandomGenerator implements KeyListener {
 	
 	private ArrayList<Long> results;
-	private JFrame listen;
-	private boolean closed;
 	private final long startMilli;
 	
 	/** Constructor: sets the JFrame and variables*/
-	public Key_Listener() {
+	public RandomGenerator() {
 		results = new ArrayList<Long>();
-		closed = false;
 		startMilli = ZonedDateTime.now().toInstant().toEpochMilli();
-		listen = new JFrame("Randy");
-		listen.addKeyListener(this);
-		listen.setSize(250, 250);
-		listen.setVisible(true);
-		listen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//DISPOSE_ON_CLOSE
 	}
 
 	@Override
@@ -45,22 +31,11 @@ public class Key_Listener implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		if((int)e.getKeyChar() == 10) {
-			closed = true;
-			closeWindow();
-		}
+		
 	}
 	
 	public long[] getResults() {
 		return createResults();
-	}
-
-	public boolean isClosed() {
-		return closed;
-	}
-	
-	public void closeWindow() {
-		listen.dispose();
 	}
 	
 	private long[] createResults() {
@@ -80,16 +55,8 @@ public class Key_Listener implements KeyListener {
 		return array;
 	}
 	
-	public static long[] random() {
-		Key_Listener keyListener = new Key_Listener();
-		while(!keyListener.isClosed()) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		return keyListener.getResults();
+	public void resetGenerator() {
+		results.clear();
 	}
 
 }

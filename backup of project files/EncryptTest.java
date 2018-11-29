@@ -17,6 +17,8 @@ public class EncryptTest extends Save {
 		
 		encrypt.encrypt();
 		
+		setFileLocation("src/project2/data/");
+		
 		save(encrypt);
 		
 		String encryptedFromFile = readFile("src/project2/data/EncryptedText.txt");

@@ -29,8 +29,8 @@ public class Encrypt extends Encryption{
 		long[] encryptedArray = new long[getDecryptedText().length()];
 
 		//Check for keys
-		if (getKey() == null)
-			generateNewKey();
+		//if (getKey() == null)
+		//	generateNewKey();
 
 		/*First level of encryption:
 		 * takes the string provided by user and
@@ -89,8 +89,8 @@ public class Encrypt extends Encryption{
 	}
 
 	/**Generates a new random set of keys based on user input*/
-	public void generateNewKey() {
-		setKey(Key_Listener.random());
-	}
+	//public void generateNewKey() {
+	//	setKey(Key_Listener.random());
+	//}
 
 }
