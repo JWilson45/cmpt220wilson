@@ -69,4 +69,8 @@ abstract class Encryption {
 	public void setKey2(ArrayList<Integer> key2) {
 		this.key2 = key2;
 	}
+	
+	public void resetKey2() {
+		key2.clear();
+	}
 }

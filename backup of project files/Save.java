@@ -88,18 +88,42 @@ abstract class Save {
 		input.close();
 	}
 
-	public static void setKeysFromFile(Decrypt e, String FileLocation) throws FileNotFoundException {
-		String fileLocationTmp = fileLocation;
-		fileLocation = FileLocation;
-		setKeysFromFile(e);
-		fileLocation = fileLocationTmp;
+	public static void setKeysFromFile(Decrypt e, String fileLocation) {
+		File keyTextFile = new File(fileLocation);
+		
+		try {
+			Scanner input = new Scanner(keyTextFile);
+
+		long[] longArray = new long[input.nextInt()];
+		ArrayList<Integer> longList = new ArrayList<>();
+
+		for(int i = 0; i<longArray.length;i++)
+			longArray[i] = input.nextLong();
+
+		e.setKey(longArray);
+
+		while(input.hasNext())
+			longList.add(input.nextInt());
+
+		e.setKey2(longList);
+
+		input.close();
+		
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
 	}
 
-	public static void setEncryptedTextFromFile(Decrypt e, String FileLocation) throws FileNotFoundException {
-		String fileLocationTmp = fileLocation;
-		fileLocation = FileLocation;
-		setEncryptedTextFromFile(e);
-		fileLocation = fileLocationTmp;
+	public static void setEncryptedTextFromFile(Decrypt e, String fileLocation) {
+		File encryptedText = new File(fileLocation);
+		try {
+			Scanner input = new Scanner(encryptedText);
+		String s = input.nextLine();
+		input.close();
+		e.setEncryptedText(s);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	public static void setDefaultKey(Encrypt e, String fileLocation) {
