@@ -16,30 +16,40 @@ abstract class Save {
 
 	public static void save(Encrypt e) {
 		try {
+			//Print the encrypted text to file
 			PrintWriter pw = new PrintWriter(fileLocation + encryptedTextFileName,"UTF-8");
-			for(int i = 0; i<e.getEncryptedText().length();i++) {
-				if (e.getEncryptedText().charAt(i) == ',')
-					i++;
-				pw.print(e.getEncryptedText().charAt(i));
-			}
+			pw.print(e.getEncryptedText());
+
+			//Print the first key into the keys file
 			PrintWriter pw2 = new PrintWriter(fileLocation + keysFileName,"UTF-8");
+			String key1Export = Arrays.toString(e.getKey());
 			pw2.print(e.getKey().length + " ");
-			for(int i = 1; i<Arrays.toString(e.getKey()).length()-1;i++) {
-				if (Arrays.toString(e.getKey()).charAt(i) == ',')
+			StringBuilder keysString = new StringBuilder();
+			for(int i = 1; i<key1Export.length()-1;i++) {
+				if (key1Export.charAt(i) == ',')
 					i++;
-				pw2.print(Arrays.toString(e.getKey()).charAt(i));
+				keysString.append(key1Export.charAt(i));
 			}
+
+			pw2.print(keysString.toString());
 			pw2.println();
-			for(int i = 1; i<e.getKey2().toString().length()-1;i++) {
-				if (e.getKey2().toString().charAt(i) == ',')
+
+			//Print the second key into the keys file
+			String key2Export = e.getKey2().toString();
+			keysString = new StringBuilder();
+			for(int i = 1; i<key2Export.length()-1;i++) {
+				if (key2Export.charAt(i) == ',')
 					i++;
-				pw2.print(e.getKey2().toString().charAt(i));
+				keysString.append(key2Export.charAt(i));
 			}
+
+			pw2.print(keysString.toString());
+
+			//Close the print writers
 			pw2.close();
 			pw.close();
 		} catch (FileNotFoundException | UnsupportedEncodingException e1) {
 			e1.printStackTrace();
-			System.exit(1);
 		}
 
 	}
@@ -50,7 +60,7 @@ abstract class Save {
 			setEncryptedTextFromFile(e);
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
-			System.exit(0);}
+		}
 	}
 
 	public static void setEncryptedTextFromFile(Decrypt e) throws FileNotFoundException {
@@ -167,7 +177,7 @@ abstract class Save {
 			}
 		}
 		return userFile + defaultFileName;
-		
+
 	}
 
 	public String getKeysFileName() {
