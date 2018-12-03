@@ -42,7 +42,7 @@ public class RandomGenerator implements KeyListener {
 		ArrayList<Long> r_nums = new ArrayList<Long>();
 		for (int i = 0; i<results.size()-1;i+=2) {
 			long n =(results.get(i) - results.get(i+1)) < 0 ? (-1*(results.get(i) - results.get(i+1))):(results.get(i) - results.get(i+1));
-			if(n != 0)
+			if(n != 0 && n < 5000)
 				r_nums.add(((results.get(i) - results.get(i+1)) < 0 ? (-1*(results.get(i) - results.get(i+1))):(results.get(i) - results.get(i+1))));
 		}
 		return toArray(r_nums);

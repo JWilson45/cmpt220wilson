@@ -8,18 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-/**
- * By default, the file location is "data/". Change file location
- * and file names with getters and setters. Use save(Encrypt e) to save
- * files and getAllEncryptedData(Decrypt e) to  
- * @author Jason Wilson
- *
- */
 abstract class Save {
 
-	private static String fileLocation = "data/";
-	private static String keysFileName = "key.txt";
-	private static String encryptedTextFileName = "EncryptedText.txt";
+	private static String fileLocation;
+	private static final String keysFileName = "key.txt";
+	private static final String encryptedTextFileName = "EncryptedText.txt";
 
 	public static void save(Encrypt e) {
 		try {
@@ -29,7 +22,7 @@ abstract class Save {
 					i++;
 				pw.print(e.getEncryptedText().charAt(i));
 			}
-			PrintWriter pw2 = new PrintWriter("src/project2/data/key.txt","UTF-8");
+			PrintWriter pw2 = new PrintWriter(fileLocation + keysFileName,"UTF-8");
 			pw2.print(e.getKey().length + " ");
 			for(int i = 1; i<Arrays.toString(e.getKey()).length()-1;i++) {
 				if (Arrays.toString(e.getKey()).charAt(i) == ',')
@@ -90,25 +83,25 @@ abstract class Save {
 
 	public static void setKeysFromFile(Decrypt e, String fileLocation) {
 		File keyTextFile = new File(fileLocation);
-		
+
 		try {
 			Scanner input = new Scanner(keyTextFile);
 
-		long[] longArray = new long[input.nextInt()];
-		ArrayList<Integer> longList = new ArrayList<>();
+			long[] longArray = new long[input.nextInt()];
+			ArrayList<Integer> longList = new ArrayList<>();
 
-		for(int i = 0; i<longArray.length;i++)
-			longArray[i] = input.nextLong();
+			for(int i = 0; i<longArray.length;i++)
+				longArray[i] = input.nextLong();
 
-		e.setKey(longArray);
+			e.setKey(longArray);
 
-		while(input.hasNext())
-			longList.add(input.nextInt());
+			while(input.hasNext())
+				longList.add(input.nextInt());
 
-		e.setKey2(longList);
+			e.setKey2(longList);
 
-		input.close();
-		
+			input.close();
+
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
@@ -118,9 +111,9 @@ abstract class Save {
 		File encryptedText = new File(fileLocation);
 		try {
 			Scanner input = new Scanner(encryptedText);
-		String s = input.nextLine();
-		input.close();
-		e.setEncryptedText(s);
+			String s = input.nextLine();
+			input.close();
+			e.setEncryptedText(s);
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
@@ -149,7 +142,7 @@ abstract class Save {
 			Scanner input = new Scanner(decryptedTextFile);
 			while(input.hasNextLine()) {
 				importText.append(input.nextLine());
-				importText.append(10);
+				importText.append((char)10);
 			}
 			input.close();
 			importText.deleteCharAt(importText.length() - 1);
@@ -159,21 +152,30 @@ abstract class Save {
 		return importText.toString();
 	}
 
+	public static String getDefaultFilePath() {
+		String userFile = System.getProperty("user.dir").substring(0, System.getProperty("user.dir").lastIndexOf(System.getProperty("file.separator")) + 1);
+		final String defaultFileName = "data";
+		File defaultDir = new File(userFile + defaultFileName);
+		if(!defaultDir.exists()) {
+			defaultDir.mkdir();
+			try {
+				PrintWriter pw = new PrintWriter(defaultDir + System.getProperty("file.separator") + defaultFileName + "DefaultKey.txt","UTF-8");
+				pw.print("28 70 8 60 155 128 163 197 16 37 15 22 43 7 2 6 67 93 143 34 50 24 85 48 39 11 8 7 49");
+				pw.close();
+			} catch (FileNotFoundException | UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		return userFile + defaultFileName;
+		
+	}
+
 	public String getKeysFileName() {
 		return keysFileName;
 	}
 
-	public static void setKeysFileName(String keysFile) {
-		keysFileName = keysFile;
-	}
-
-
 	public static String getEncryptedTextFileName() {
 		return encryptedTextFileName;
-	}
-
-	public static void setEncryptedTextFileName(String encryptedTextFile) {
-		encryptedTextFileName = encryptedTextFile;
 	}
 
 	public static String getFileLocation() {

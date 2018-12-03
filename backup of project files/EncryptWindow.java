@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
@@ -29,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.Arrays;
 
 import javax.swing.JPanel;
@@ -44,8 +47,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
+import javax.swing.JScrollPane;
 
-public class EncryptWindow extends Save implements ActionListener{
+public class EncryptWindow implements ActionListener{
 
 	private JFrame frmEncryptionV;
 	private JFrame frmRandomGen;
@@ -62,10 +66,13 @@ public class EncryptWindow extends Save implements ActionListener{
 	private JFileChooser directoryChooser;
 	private JFileChooser fileChooserEncryptedText;
 	private JFileChooser fileChooserKey;
+	private JFileChooser saveAs;
+	private JFileChooser importTextToEncrypt;
 	private String defaultKeyFile;
 	private JCheckBox chckbxAdvancedFileChoosing;
 	private JRadioButton rdbtnDecryptFromFile;
 	private JRadioButton rdbtnDecryptFromEncrypted;
+	private JCheckBox autoSave;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -88,7 +95,8 @@ public class EncryptWindow extends Save implements ActionListener{
 		encrypt = new Encrypt();
 		decrypt = new Decrypt();
 		randomGenerator = new RandomGenerator();
-		defaultKeyFile = "src/project2/data/DefaultKey.txt";
+		defaultKeyFile = //getDefaultFilePath();
+				"src/project2/data/DefaultKey.txt";
 
 		frmEncryptionV = new JFrame();
 		frmEncryptionV.getContentPane().setEnabled(false);
@@ -144,9 +152,10 @@ public class EncryptWindow extends Save implements ActionListener{
 		lblEncryptedText.setBounds(6, 117, 107, 16);
 		frmEncryptionV.getContentPane().add(lblEncryptedText);
 
-		JCheckBox autoSave = new JCheckBox("Save to File");
+		autoSave = new JCheckBox("Save to File");
 		autoSave.setBounds(16, 51, 107, 23);
 		frmEncryptionV.getContentPane().add(autoSave);
+		autoSave.setToolTipText("Automatically saves when encryption occures");
 		autoSave.addActionListener(this);
 
 		btnSave = new JButton("Save as...");
@@ -155,12 +164,15 @@ public class EncryptWindow extends Save implements ActionListener{
 		btnSave.addActionListener(this);
 
 		filePathTextField1 = new JTextField();
-		filePathTextField1.setToolTipText("Enter file path to folder");
-		filePathTextField1.setText("src/project2/data/");
+		filePathTextField1.setToolTipText(System.getProperty("user.dir"));
+		filePathTextField1.setText(System.getProperty("user.dir"));
 		filePathTextField1.setEnabled(false);
 		filePathTextField1.setBounds(135, 50, 225, 26);
 		frmEncryptionV.getContentPane().add(filePathTextField1);
 		filePathTextField1.setColumns(10);
+		filePathTextField1.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {}public void keyPressed(KeyEvent e){}
+			public void keyReleased(KeyEvent e){filePathTextField1.setToolTipText(filePathTextField1.getText());}});
 
 		btnBrowse = new JButton("Browse");
 		btnBrowse.setEnabled(false);
@@ -171,17 +183,13 @@ public class EncryptWindow extends Save implements ActionListener{
 		fileChooser = new JFileChooser();
 		fileChooserEncryptedText = new JFileChooser();
 		fileChooserKey = new JFileChooser();
-		//		fileChooser.setCurrentDirectory();
+		
+		importTextToEncrypt = new JFileChooser();
+		importTextToEncrypt.setDialogTitle("Save to Directory");
+		importTextToEncrypt.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
 		directoryChooser = new JFileChooser();
 		directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-		encrytpedTextBox = new JTextArea();
-		encrytpedTextBox.setBackground(SystemColor.window);
-		encrytpedTextBox.setEditable(false);
-		encrytpedTextBox.setLineWrap(true);
-		encrytpedTextBox.setBounds(16, 135, 409, 314);
-		frmEncryptionV.getContentPane().add(encrytpedTextBox);
 
 		JButton btnOpenInSeperate = new JButton("Open in Seperate Window");
 		btnOpenInSeperate.setBounds(123, 455, 211, 29);
@@ -227,13 +235,6 @@ public class EncryptWindow extends Save implements ActionListener{
 		lblDecryptedText.setBounds(426, 117, 107, 16);
 		frmEncryptionV.getContentPane().add(lblDecryptedText);
 
-		decryptedTextBox = new JTextArea();
-		decryptedTextBox.setLineWrap(true);
-		decryptedTextBox.setEditable(false);
-		decryptedTextBox.setBackground(SystemColor.window);
-		decryptedTextBox.setBounds(436, 137, 435, 314);
-		frmEncryptionV.getContentPane().add(decryptedTextBox);
-
 		JButton btnDecrypt = new JButton("Decrypt");
 		btnDecrypt.setBounds(754, 86, 117, 29);
 		frmEncryptionV.getContentPane().add(btnDecrypt);
@@ -278,6 +279,31 @@ public class EncryptWindow extends Save implements ActionListener{
 		btnOpenInSeperate_1.setBounds(540, 455, 211, 29);
 		frmEncryptionV.getContentPane().add(btnOpenInSeperate_1);
 
+		JScrollPane scrollPaneEncryptedText = new JScrollPane();
+		scrollPaneEncryptedText.setBounds(16, 137, 409, 314);
+		frmEncryptionV.getContentPane().add(scrollPaneEncryptedText);
+
+		encrytpedTextBox = new JTextArea();
+		scrollPaneEncryptedText.setViewportView(encrytpedTextBox);
+		encrytpedTextBox.setBackground(SystemColor.window);
+		encrytpedTextBox.setEditable(false);
+		encrytpedTextBox.setLineWrap(true);
+
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(436, 137, 435, 314);
+		frmEncryptionV.getContentPane().add(scrollPane_1);
+
+		decryptedTextBox = new JTextArea();
+		scrollPane_1.setViewportView(decryptedTextBox);
+		decryptedTextBox.setLineWrap(true);
+		decryptedTextBox.setEditable(false);
+		decryptedTextBox.setBackground(SystemColor.window);
+
+		JButton btnImportText = new JButton("Import Text");
+		btnImportText.setBounds(305, 1, 117, 29);
+		frmEncryptionV.getContentPane().add(btnImportText);
+		btnImportText.addActionListener(this);
+
 		JMenuBar menuBar = new JMenuBar();
 		JMenu mnFile = new JMenu();
 		mnFile.setText("File");
@@ -286,12 +312,6 @@ public class EncryptWindow extends Save implements ActionListener{
 
 		JMenuItem mntmImport = new JMenuItem("Import");
 		mnFile.add(mntmImport);
-
-		JMenuItem mntmSaveAs = new JMenuItem("Save as...");
-		mnFile.add(mntmSaveAs);
-
-		JMenuItem mntmSave = new JMenuItem("Save");
-		mnFile.add(mntmSave);
 
 		JMenuItem item = new JMenuItem("Exit");
 		mnFile.add(item);
@@ -304,6 +324,23 @@ public class EncryptWindow extends Save implements ActionListener{
 
 		JMenuItem mntmEncrypt = new JMenuItem("Encrypt");
 		mnEncryption.add(mntmEncrypt);
+		mntmEncrypt.addActionListener(this);
+
+		JMenuItem mntmSave = new JMenuItem("Save");
+		mnEncryption.add(mntmSave);
+		mntmSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Save.setFileLocation("/Users/jasonwilson/Desktop/data/");
+				Save.save(encrypt);
+			}});
+
+		saveAs = new JFileChooser();
+		saveAs.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		saveAs.setDialogTitle("Save to Folder");
+
+		JMenuItem mntmSaveAs = new JMenuItem("Save as...");
+		mnEncryption.add(mntmSaveAs);
+		mntmSaveAs.addActionListener(this);
 
 		JMenuItem mntmResetKey = new JMenuItem("Regenerate Key");
 		mnEncryption.add(mntmResetKey);
@@ -318,6 +355,7 @@ public class EncryptWindow extends Save implements ActionListener{
 
 		JMenuItem mntmDecrypt = new JMenuItem("Decrypt");
 		mnDecryption.add(mntmDecrypt);
+		mntmDecrypt.addActionListener(this);
 
 	}
 	/*
@@ -330,6 +368,8 @@ public class EncryptWindow extends Save implements ActionListener{
 	 * make sure key is long enough to encrypt
 	 * 
 	 * Make sure decryption saves with the char 10's
+	 * 
+	 * Add to tab "Set default save folder"?
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -339,9 +379,9 @@ public class EncryptWindow extends Save implements ActionListener{
 			filePathTextField1.setEnabled(filePathTextField1.isEnabled() ? false:true);
 			btnBrowse.setEnabled(btnBrowse.isEnabled() ? false:true);
 		}else if(e.getActionCommand() == "Browse") {
-			//fileChooser.showOpenDialog(frmEncryptionV);
-			//filePathTextField1.setText(fileChooser.getSelectedFile().toString());
-			//	fileChooser.showSaveDialog(frmEncryptionV);
+			if(importTextToEncrypt.showOpenDialog(frmEncryptionV) == 1)
+					return;
+			filePathTextField1.setText(importTextToEncrypt.getSelectedFile().toString());
 		}else if(e.getActionCommand() == "Set Directory") {
 			directoryChooser.showOpenDialog(frmEncryptionV);
 		}else if(e.getActionCommand() == "Decrypt") {
@@ -350,27 +390,51 @@ public class EncryptWindow extends Save implements ActionListener{
 			fileChooserEncryptedText.showOpenDialog(frmEncryptionV);
 		}else if(e.getActionCommand() == "Set key") {
 			fileChooserKey.showOpenDialog(frmEncryptionV);
+		}else if(e.getActionCommand() == "Save as...") {
+			saveAsAction();
+		}else if (e.getActionCommand() == "Import Text") {
+			importEncryptAction();
 		}
 		else System.out.println(e.getActionCommand());
 
 	}
 
-	//fix!!!
 	private void encryptAction() {	
-		encrypt.setDecryptedText(decryptedTextUserInput.getText());
 		if(decryptedTextUserInput.getText().length() <= 1)
 			if(noTextImport()) {
-				fileChooser.showOpenDialog(frmEncryptionV);
-				if(fileChooser.getSelectedFile() == null)
+				if(importTextToEncryptor() == 1)
 					return;
-				encrypt.setDecryptedText(importDecryptedText(fileChooser.getSelectedFile().toString()));
+				encrypt.setDecryptedText(Save.importDecryptedText(fileChooser.getSelectedFile().toString()));
 			} else return;
+		else encrypt.setDecryptedText(decryptedTextUserInput.getText());
 		encrypt.setKey(randomGenerator.getResults());
 		if(encrypt.getKey().length <= 2)
-			setDefaultKey(encrypt, defaultKeyFile);
+			Save.setDefaultKey(encrypt, defaultKeyFile);
 		encrypt.resetKey2();
 		encrypt.encrypt();
 		encrytpedTextBox.setText(encrypt.getEncryptedText());
+		if(autoSave.isSelected())
+			autoSave();
+	}
+	
+	private void importEncryptAction(){
+		if(importTextToEncryptor() == 1)
+			return;
+		encrypt.setDecryptedText(Save.importDecryptedText(fileChooser.getSelectedFile().toString()));
+		encrypt.setKey(randomGenerator.getResults());
+		if(encrypt.getKey().length <= 2)
+			Save.setDefaultKey(encrypt, defaultKeyFile);
+		encrypt.resetKey2();
+		encrypt.encrypt();
+		encrytpedTextBox.setText(encrypt.getEncryptedText());
+		if(autoSave.isSelected())
+			autoSave();
+	}
+
+	private int importTextToEncryptor() {
+		if(fileChooser.showOpenDialog(frmEncryptionV) == 1)
+			return 1;
+		return 0;
 	}
 
 	private void decryptAction() {
@@ -384,10 +448,8 @@ public class EncryptWindow extends Save implements ActionListener{
 						return;
 					}
 				}
-				setFileLocation(directoryChooser.getSelectedFile().toString() + "/");
-				setKeysFileName("key.txt");
-				setEncryptedTextFileName("EncryptedText.txt");
-				setAllEncryptedDataFromFile(decrypt);
+				Save.setFileLocation(directoryChooser.getSelectedFile().toString() + System.getProperty("file.separator"));
+				Save.setAllEncryptedDataFromFile(decrypt);
 			} else {
 				if(fileChooserEncryptedText.getSelectedFile() == null || fileChooserKey.getSelectedFile() == null) {
 					if (fileChooserEncryptedText.getSelectedFile() == null && fileChooserKey.getSelectedFile() == null)
@@ -397,8 +459,8 @@ public class EncryptWindow extends Save implements ActionListener{
 					else displayWarning("Decryption canceled. Key file is not set.");
 					return;
 				}
-				setEncryptedTextFromFile(decrypt, fileChooserEncryptedText.getSelectedFile().toString());
-				setKeysFromFile(decrypt, fileChooserKey.getSelectedFile().toString());
+				Save.setEncryptedTextFromFile(decrypt, fileChooserEncryptedText.getSelectedFile().toString());
+				Save.setKeysFromFile(decrypt, fileChooserKey.getSelectedFile().toString());
 			}
 		}else if(rdbtnDecryptFromEncrypted.isSelected()) {
 			if(encrypt.getEncryptedText() == null) {
@@ -424,6 +486,23 @@ public class EncryptWindow extends Save implements ActionListener{
 		int result = JOptionPane.showConfirmDialog((Component) null, "Do you wish to import text from file?",
 				"No text detected", JOptionPane.YES_NO_OPTION);
 		return result == 0 ? true:false;
+	}
+
+	private void saveAsAction() {
+		if(saveAs.showOpenDialog(frmEncryptionV) == 1)
+			return;
+		Save.setFileLocation(saveAs.getSelectedFile().toString() + System.getProperty("file.separator"));
+		Save.save(encrypt);
+	}
+	
+	private void autoSave() {
+		File autoSaveFile = new File(importTextToEncrypt.getSelectedFile().toString());
+		if(!autoSaveFile.exists()) {
+			displayWarning("File does not exist");
+			return;
+		}
+		Save.setFileLocation(importTextToEncrypt.getSelectedFile().toString() + System.getProperty("file.separator"));
+		Save.save(encrypt);
 	}
 }
 
