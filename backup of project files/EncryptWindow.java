@@ -75,8 +75,7 @@ public class EncryptWindow implements ActionListener{
 		encrypt = new Encrypt();
 		decrypt = new Decrypt();
 		randomGenerator = new RandomGenerator();
-		defaultKeyFile = //Save.getDefaultFilePath();
-				"src/project2/data/DefaultKey.txt";
+		defaultKeyFile = Save.getDefaultFilePath();
 
 		frmEncryptionV = new JFrame("Encryption v1.0");
 		frmEncryptionV.getContentPane().setEnabled(false);
