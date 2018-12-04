@@ -176,7 +176,7 @@ abstract class Save {
 				e.printStackTrace();
 			}
 		}
-		return userFile + defaultFileName;
+		return userFile + defaultFileName + System.getProperty("file.separator");
 
 	}
 

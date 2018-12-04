@@ -3,16 +3,8 @@ package project2;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
-import java.awt.BorderLayout;
-import javax.swing.BoxLayout;
-import java.awt.FlowLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -22,31 +14,18 @@ import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
-import javax.swing.JToolBar;
 import javax.swing.JCheckBox;
-import javax.swing.JTextPane;
-import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Arrays;
 
-import javax.swing.JPanel;
-import javax.swing.DropMode;
-import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 
-import java.awt.Color;
 import java.awt.SystemColor;
-import javax.swing.JProgressBar;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JRadioButton;
-import javax.swing.JToggleButton;
 import javax.swing.JScrollPane;
 
 public class EncryptWindow implements ActionListener{
@@ -75,7 +54,7 @@ public class EncryptWindow implements ActionListener{
 	private JRadioButton rdbtnDecryptFromEncrypted;
 	private JCheckBox autoSave;
 
-	public static void main(String[] args) {
+	public static void runApplication() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -96,7 +75,7 @@ public class EncryptWindow implements ActionListener{
 		encrypt = new Encrypt();
 		decrypt = new Decrypt();
 		randomGenerator = new RandomGenerator();
-		defaultKeyFile = //getDefaultFilePath();
+		defaultKeyFile = //Save.getDefaultFilePath();
 				"src/project2/data/DefaultKey.txt";
 
 		frmEncryptionV = new JFrame("Encryption v1.0");
