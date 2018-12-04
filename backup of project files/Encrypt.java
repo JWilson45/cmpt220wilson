@@ -28,10 +28,6 @@ public class Encrypt extends Encryption{
 		//Set Variable(s)
 		long[] encryptedArray = new long[getDecryptedText().length()];
 
-		//Check for keys
-		//if (getKey() == null)
-		//	generateNewKey();
-
 		/*First level of encryption:
 		 * takes the string provided by user and
 		 * changes their values using the random
@@ -67,7 +63,6 @@ public class Encrypt extends Encryption{
 			while(
 					randomCharShiftNumber < 32
 					|| ((int)Arrays.toString(l).charAt(i))-48 + randomCharShiftNumber == 133
-					|| ((int)Arrays.toString(l).charAt(i))-48 + randomCharShiftNumber == 44
 					);
 
 			//Adding values to Lists
@@ -79,7 +74,6 @@ public class Encrypt extends Encryption{
 	}
 
 	private void setEncryptedText(ArrayList<Integer> encryptionStage2) {
-		//Set Variable(s)
 		StringBuilder encryptedString = new StringBuilder();
 
 		for (int i = 0;i < encryptionStage2.size();i++) {
@@ -87,10 +81,5 @@ public class Encrypt extends Encryption{
 		}
 		setEncryptedText(encryptedString.toString());
 	}
-
-	/**Generates a new random set of keys based on user input*/
-	//public void generateNewKey() {
-	//	setKey(Key_Listener.random());
-	//}
 
 }

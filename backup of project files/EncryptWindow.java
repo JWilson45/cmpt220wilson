@@ -68,6 +68,7 @@ public class EncryptWindow implements ActionListener{
 	private JFileChooser fileChooserKey;
 	private JFileChooser saveAs;
 	private JFileChooser importTextToEncrypt;
+	private JFileChooser saveAsDecrypt;
 	private String defaultKeyFile;
 	private JCheckBox chckbxAdvancedFileChoosing;
 	private JRadioButton rdbtnDecryptFromFile;
@@ -98,16 +99,16 @@ public class EncryptWindow implements ActionListener{
 		defaultKeyFile = //getDefaultFilePath();
 				"src/project2/data/DefaultKey.txt";
 
-		frmEncryptionV = new JFrame();
+		frmEncryptionV = new JFrame("Encryption v1.0");
 		frmEncryptionV.getContentPane().setEnabled(false);
 		frmEncryptionV.setResizable(false);
-		frmEncryptionV.setTitle("Encryption v1.0");
 		frmEncryptionV.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmEncryptionV.getContentPane().setLayout(null);
 		frmEncryptionV.setSize(892, 532);
 
 		frmRandomGen = new JFrame("Random Number Generator");
 		frmRandomGen.setAlwaysOnTop(true);
+		frmRandomGen.setResizable(false);
 		frmRandomGen.setBounds(100, 100, 450, 176);
 		frmRandomGen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmRandomGen.getContentPane().setLayout(null);
@@ -128,9 +129,7 @@ public class EncryptWindow implements ActionListener{
 		frmRandomGen.getContentPane().add(btnDone);
 		btnDone.addKeyListener(randomGenerator);
 		btnDone.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frmRandomGen.dispose();
-			}});
+			public void actionPerformed(ActionEvent e) {frmRandomGen.dispose();}});
 
 		JLabel lblTextToEncrypt = new JLabel("Text to encrypt:");
 		lblTextToEncrypt.setBounds(6, 6, 109, 16);
@@ -184,17 +183,15 @@ public class EncryptWindow implements ActionListener{
 		fileChooserEncryptedText = new JFileChooser();
 		fileChooserKey = new JFileChooser();
 		
+		saveAsDecrypt = new JFileChooser();
+		saveAsDecrypt.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
 		importTextToEncrypt = new JFileChooser();
 		importTextToEncrypt.setDialogTitle("Save to Directory");
 		importTextToEncrypt.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
 		directoryChooser = new JFileChooser();
 		directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-		JButton btnOpenInSeperate = new JButton("Open in Seperate Window");
-		btnOpenInSeperate.setBounds(123, 455, 211, 29);
-		frmEncryptionV.getContentPane().add(btnOpenInSeperate);
-		btnOpenInSeperate.addActionListener(this);
 
 		JLabel lblDecryption = new JLabel("Decryption:");
 		lblDecryption.setBounds(426, 6, 79, 16);
@@ -274,10 +271,7 @@ public class EncryptWindow implements ActionListener{
 		JButton btnSaveAs = new JButton("Save as... ");
 		btnSaveAs.setBounds(426, 455, 117, 29);
 		frmEncryptionV.getContentPane().add(btnSaveAs);
-
-		JButton btnOpenInSeperate_1 = new JButton("Open in Seperate Window ");
-		btnOpenInSeperate_1.setBounds(540, 455, 211, 29);
-		frmEncryptionV.getContentPane().add(btnOpenInSeperate_1);
+		btnSaveAs.addActionListener(this);
 
 		JScrollPane scrollPaneEncryptedText = new JScrollPane();
 		scrollPaneEncryptedText.setBounds(16, 137, 409, 314);
@@ -325,12 +319,15 @@ public class EncryptWindow implements ActionListener{
 		JMenuItem mntmEncrypt = new JMenuItem("Encrypt");
 		mnEncryption.add(mntmEncrypt);
 		mntmEncrypt.addActionListener(this);
+		
+		JMenuItem mntmImportText = new JMenuItem("Import Text");
+		mnEncryption.add(mntmImportText);
 
 		JMenuItem mntmSave = new JMenuItem("Save");
 		mnEncryption.add(mntmSave);
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Save.setFileLocation("/Users/jasonwilson/Desktop/data/");
+				Save.setFileLocation(defaultKeyFile);
 				Save.save(encrypt);
 			}});
 
@@ -341,6 +338,9 @@ public class EncryptWindow implements ActionListener{
 		JMenuItem mntmSaveAs = new JMenuItem("Save as...");
 		mnEncryption.add(mntmSaveAs);
 		mntmSaveAs.addActionListener(this);
+		
+		JCheckBoxMenuItem chckbxmntmSaveToFile = new JCheckBoxMenuItem("Save to File");
+		mnEncryption.add(chckbxmntmSaveToFile);
 
 		JMenuItem mntmResetKey = new JMenuItem("Regenerate Key");
 		mnEncryption.add(mntmResetKey);
@@ -356,7 +356,16 @@ public class EncryptWindow implements ActionListener{
 		JMenuItem mntmDecrypt = new JMenuItem("Decrypt");
 		mnDecryption.add(mntmDecrypt);
 		mntmDecrypt.addActionListener(this);
-
+		
+		JMenuItem mntmDecryptFromFile = new JMenuItem("Decrypt from file");
+		mnDecryption.add(mntmDecryptFromFile);
+		
+		JMenuItem mntmDecryptFromEncrypted = new JMenuItem("Decrypt from Text Box");
+		mnDecryption.add(mntmDecryptFromEncrypted);
+		
+		JMenuItem mntmSaveAsDecrypt = new JMenuItem("Save as... ");
+		mnDecryption.add(mntmSaveAsDecrypt);
+		mntmSaveAsDecrypt.addActionListener(this);
 	}
 	/*
 	 * Create tool bar
@@ -391,11 +400,12 @@ public class EncryptWindow implements ActionListener{
 		}else if(e.getActionCommand() == "Set key") {
 			fileChooserKey.showOpenDialog(frmEncryptionV);
 		}else if(e.getActionCommand() == "Save as...") {
-			saveAsAction();
-		}else if (e.getActionCommand() == "Import Text") {
+			saveAsEncryptAction();
+		}else if(e.getActionCommand() == "Save as... ") {
+			saveAsDecryptAction();
+		}else if(e.getActionCommand() == "Import Text") {
 			importEncryptAction();
-		}
-		else System.out.println(e.getActionCommand());
+		}else System.out.println(e.getActionCommand());
 
 	}
 
@@ -478,7 +488,7 @@ public class EncryptWindow implements ActionListener{
 		decryptedTextBox.setText(decrypt.getDecryptedText());
 	}
 
-	private static void displayWarning(String message) {
+	protected static void displayWarning(String message) {
 		JOptionPane.showMessageDialog(null, message, "Warning", JOptionPane.WARNING_MESSAGE);
 	}
 
@@ -488,11 +498,26 @@ public class EncryptWindow implements ActionListener{
 		return result == 0 ? true:false;
 	}
 
-	private void saveAsAction() {
+	private void saveAsEncryptAction() {
+		if(encrypt.getEncryptedText() == null) {
+			displayWarning("Encrypt something to save");
+			return;
+		}
 		if(saveAs.showOpenDialog(frmEncryptionV) == 1)
 			return;
 		Save.setFileLocation(saveAs.getSelectedFile().toString() + System.getProperty("file.separator"));
 		Save.save(encrypt);
+	}
+	
+	private void saveAsDecryptAction() {
+		if(decrypt.getDecryptedText() == null) {
+			displayWarning("Decrypt something to save");
+			return;
+		}
+		if(saveAsDecrypt.showSaveDialog(frmEncryptionV) == 1)
+			return;
+		Save.setFileLocation(saveAsDecrypt.getSelectedFile().toString());
+		Save.saveText(decrypt.getDecryptedText());
 	}
 	
 	private void autoSave() {

@@ -196,4 +196,15 @@ abstract class Save {
 		fileLocation = FileLocation;
 	}
 
+	public static void saveText(String decryptedText) {
+		File decryptTextFile = new File(fileLocation);
+		try {
+			PrintWriter pw = new PrintWriter(decryptTextFile);
+			pw.print(decryptedText);
+			pw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

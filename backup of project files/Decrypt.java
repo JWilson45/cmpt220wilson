@@ -31,9 +31,9 @@ public class Decrypt extends Encryption{
 		ArrayList<Integer> encryptedTextAsChar = toChar();
 		ArrayList<Integer> key2UsedDecryption = reverseKey2(encryptedTextAsChar);
 		String decryptedStage2String = Stage2(key2UsedDecryption);
-//		System.out.println(encryptedTextAsChar);
-//		System.out.println(key2UsedDecryption);
-//		System.out.println(decryptedStage2String);
+		//		System.out.println(encryptedTextAsChar);
+		//		System.out.println(key2UsedDecryption);
+		//		System.out.println(decryptedStage2String);
 		ArrayList<Integer> encryptedInt = Stage3(decryptedStage2String);
 		setDecryptedText(FinalStage(encryptedInt));		
 	}
@@ -50,19 +50,26 @@ public class Decrypt extends Encryption{
 		return finalText.toString();
 	}
 
+	@SuppressWarnings("finally")
 	private ArrayList<Integer> Stage3(String decryptedStage2String) {
+		boolean warn = false;
 		StringBuilder encryptedChar = new StringBuilder();
 		ArrayList<Integer> encryptedInt = new ArrayList<Integer>();
 		for(int i = 0;i<decryptedStage2String.length();i++) {
 			if(decryptedStage2String.toString().charAt(i) == ' ') {
-				encryptedInt.add(Integer.parseInt(encryptedChar.toString()));
-				encryptedChar = new StringBuilder();
-				continue;
+				try {encryptedInt.add(Integer.parseInt(encryptedChar.toString()));}
+				catch(NumberFormatException e) {warn = true;}
+				finally {
+					encryptedChar.setLength(0);
+					continue;
+				}
 			}
 			encryptedChar.append(decryptedStage2String.charAt(i));		
 		}
 		encryptedInt.add(Integer.parseInt(encryptedChar.toString()));
 
+		if(warn)
+			EncryptWindow.displayWarning("Decryption may not be 100% accurate");
 		return encryptedInt;
 	}
 
